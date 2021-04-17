@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Listes des etudiants</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="../static/css/myStyle.css"
+	th:href="@{/css/myStyle.css}">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous defer"></script>
+</head>
+<body>
+<div class="container spacer">
+<a th:href="@{form}">Saisir un étudiant</a>
+</div>
+ <div class="container spacer">
+	 <form  th:action="@{Index}" method="get">
+	 <div class="form-group">
+	 <label >Mot Clé:</label>
+	 <input type="text" name="motCle" th:value="${motCle}">
+	 <button type="submit">Chercher</button>
+	 </div>
+	 </form>
+ </div>
+	<div class="container spacer">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>NOM</th>
+					<th>Date</th>
+					<th>Email</th>
+					<th>Photo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="e:${pageEtudiants.content}">
+					<td th:text="${e.id}"></td>
+					<td th:text="${e.nom}"></td>
+					<td th:text="${e.dateNaissance}"></td>
+					<td th:text="${e.email}"></td>
+					<td> <img class="img-circle" th:src="@{getphoto(id=${e.id})}" width="100" height="100"/></td>
+					<td><a onclick="return confirm('etes-vous sur de vouloir supprimer')" th:href="@{supprimer(id=${e.id})}">Supprimer etudiant</a></td>
+					<td><a th:href="@{edit(id=${e.id})}">Mettre a jour Etudiant</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="container">
+		<ul class="nav nav-pills">
+			<li th:each="p:${pages}" th:class="${p==pageCourante}?active:''" >
+			<a th:text="${p}" th:href="@{Index(page=${p},motCle=${motCle})}"></a>
+			</li>
+		</ul>
+
+	</div>
+</body>
+</html>
